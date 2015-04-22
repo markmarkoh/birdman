@@ -1,0 +1,68 @@
+    * {
+        box-sizing: border-box;
+    }
+
+    html,body,section,article {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      background-color: #111;
+      color: #8A2106;
+      font-size: 6em;
+      font-family: "Lucida Console", Monaco, monospace;
+      text-transform: uppercase;
+    }
+
+    article {
+      padding: 75px;
+    }
+
+    article {
+      display: none;
+    }
+
+    section:first-child article {
+      display: block;
+    }
+
+    .character {
+      visibility: hidden;
+    }
+
+    .sentence {
+      text-align: center;
+    }
+
+    article h2 {
+      color: #FFF;
+      font-size: 72px;
+    }
+
+    .word {
+      visibility: hidden;
+    }
+
+    ul {
+      list-style-type: none;
+      display: block;
+      overflow: hidden;
+      width: 85%;
+      margin: 0 auto;
+    }
+
+    ul li {
+      float: left;
+      color: #FFF;
+    }
+
+    .divider {
+      color: #8A2106;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    ul, h4, h2 {
+      text-align: center;
+    }

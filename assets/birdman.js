@@ -7,6 +7,7 @@ var audioBuffer;
 
 function loadBirdmanOpening() {
   var url = 'get-ready-trim.mp3';
+  //var url = 'night-chatter.mp3';
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
   request.responseType = 'arraybuffer';
@@ -50,7 +51,7 @@ function playSound(buffer) {
     console.log(filteredBuffer);
 
     // Determine 'peaks', which for a drum track should be pretty clear
-    var peaks = getPeaksAtThreshold(e.renderedBuffer.getChannelData(0), filteredBuffer.sampleRate, 0.30);
+    var peaks = getPeaksAtThreshold(e.renderedBuffer.getChannelData(0), filteredBuffer.sampleRate, 0.22);
     console.log('Number of peaks found:', peaks.length);
 
 
@@ -90,15 +91,13 @@ function onError() {
 </p>
 */ 
 function prepText() {
-  var text = document.getElementById('text');
-  Array.prototype.forEach.call(text.getElementsByTagName('p'), function(p) {
-    var characters = p.innerText.split("").map(function(char) {
-
-      return '<span data-char="' + char.toUpperCase() + '" class="character ' + getClassName(char) + '">' + char + '</span>';
-    });
-
-    p.innerHTML = characters.join("");
-  })
+  var $text = $('.letters');
+  $text.each(function() {
+     var characters = this.textContent.split("").map(function(char) {
+          return '<span data-char="' + char.toUpperCase() + '" class="character ' + getClassName(char) + '">' + char.toUpperCase() + '</span>';
+      });
+      this.innerHTML = characters.join("");
+  });
 }
 
 function getClassName(character) {
@@ -115,14 +114,46 @@ function getClassName(character) {
   if ( character === ')' ) return 'r-paren';
 }
 
-var ORDER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!?/,.()';
+var LETTER_ORDER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!?/,.()';
 var nextCharIndex = 0;
+var nextElementToShow = 0;
+var lastShownPage = 0;
 
 function hit() {
-  var charToShow = ORDER[nextCharIndex % ORDER.length];
+  var showable = order[nextElementToShow];
+  var charShown;
 
-  $('[data-char="' + charToShow + '"]').css('visibility', 'visible');
-  nextCharIndex++;
+  if ( !showable ) return;
+
+  // Skip to the next "page" (article)
+  if ( showable.page > lastShownPage ) {
+    console.log('Hiding page', lastShownPage);
+    console.log('Showing page', showable.page);
+    $($('article').get(lastShownPage)).hide();
+    $($('article').get(showable.page)).show();
+    lastShownPage = showable.page;
+  }
+
+  $(showable.el).css('visibility', 'visible');
+
+  if ( showable.type === 'letters' ) {
+    charShown = hitLetters(showable.el);
+    if ( charShown === LETTER_ORDER.length ) {
+      nextCharIndex = 0;
+      nextElementToShow++;
+    }
+  }
+  else {
+    nextElementToShow++;
+    nextCharIndex = 0;
+  }
+}
+
+function hitLetters(el) {
+  var charToShow = LETTER_ORDER[nextCharIndex % LETTER_ORDER.length];
+
+  $(el).find('[data-char="' + charToShow + '"]').css('visibility', 'visible');
+  return nextCharIndex++;
 }
 
 prepText();

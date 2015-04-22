@@ -4,27 +4,61 @@
 <head>
   <meta charset="utf-8">
    <link rel="stylesheet" href="assets/skeleton.css" />
-  <style>
-    body {
-      background-color: #111;
-      color: #8A2106;
-      font-size: 6em;
-    }
-    .character {
-      visibility: hidden;
-    }
-  </style>
+   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-  <div id="mad"></div>
-  <div id="text">
-    <p>And did you get what you wanted from this life, even so?</p>
-    <p>i did.</p>
-    <p> and what did you want?</p>
-    <p>To call myself beloved, to feel myself beloved on the earth.</p>
-    <p> (raymond carver, Late Fragment</p>
-  </div>
+  <section>
+    <article><div class="word"></div></article>
+    <article>
+      <div class="word">
+        <h2>HTML5 Web Audio API</h2>
+        <h4>and</h4>
+        <h2>Mark DiMarco</h2>
+        <h4>Present</h4>
+      </div>
+    </article>
+    <article>
+      <h4 class="word">A</h4>
+      <ul>
+        <li class="word">New Regency<span class="divider">/</span></li>
+        <li class="word">M Productions<span class="divider">/</span></li>
+        <li class="word">Le Grisbi</li>
+      </ul>
+      <h4 class="word">Production</h4>
+    </article>
+    <article><h1 class="word"></h1></article>
+    <article>
+      <p class="letters">And did you get what you wanted from this life, even so?</p>
+      <p class="letters">i did.</p>
+      <p class="letters"> and what did you want?</p>
+      <p class="letters">To call myself beloved, to feel myself beloved on the earth.</p>
+      <p class="letters">(raymond carver, Late Fragment)</p>
+    </article>
+  </section>
   <script src="assets/jquery.js"></script>
+  <script>
+    var order = [];
+
+    var pages = $('article');
+
+    pages.each(function(index) {
+      var $page = $(this);
+
+      var $words = $page.find('.word');
+      $words.each(function() {
+        order.push({type: 'word', el: this, page: index});
+      });
+
+      var $letters = $page.find('.letters');
+      $letters.each(function() {
+        order.push({type: 'letters', el: this, page: index});
+      });
+
+    });
+
+    console.log(order);
+
+  </script>
   <script src="assets/birdman.js"></script>
 </body>
 </html>
