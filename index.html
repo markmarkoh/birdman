@@ -2,27 +2,43 @@
 
 <html lang="en">
 <head>
+  <title>Birdman</title>
   <meta charset="utf-8">
-   <link rel="stylesheet" href="assets/skeleton.css" />
-   <link rel="stylesheet" href="assets/styles.css" />
+  <meta name="description" content="Birdman - A recreation of the opening credits using HTML5 WebAudio API">
+  <link rel="stylesheet" href="assets/skeleton.css" />
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-  <section>
-    <article><div class="word"></div></article>
+  <section id="home">
     <article>
-      <div class="word top">
+      <p>This is an experiment with the HTML5 Audio API to perform some primitive beat detection.</p>
+      <p>And with those beats, we'll try to recreate the effect presented in the opening credits to the movie <em>Birdman</em>.</p>
+      <p class="center call-to-action"> Please turn your volume up and click below</p>
+      <p class="center call-to-action-img-holder"><img src="assets/Birdman_1600.jpg" /></p>
+      <ol class="links">
+        <li><a href="https://www.youtube.com/watch?v=p75qQgNdc-0">Original Opening Credits</a></li>
+        <li><a href="http://www.html5rocks.com/en/tutorials/webaudio/intro/">Intro to WebAudio</a></li>
+        <li><a href="http://tech.beatport.com/2014/web-audio/beat-detection-using-web-audio/">Beat Detection using WebAudio</a></li>
+        <li><a href="https://github.com/markmarkoh/birdman">Project Source Code</a></li>
+      </ol>
+    </article>
+  </section>
+  <section id="slides">
+    <article><div class="word"></div></article>
+    <article class="top">
+      <div class="word">
         <h2>HTML5 Web Audio API</h2>
         <h4>and</h4>
         <h2>Mark DiMarco</h2>
         <h4>Present</h4>
       </div>
     </article>
-    <article>
-      <h4 class="word top">A</h4>
+    <article class="top">
+      <h4 class="word">A</h4>
       <ul>
-        <li class="word">New Regency<span class="divider">/</span></li>
-        <li class="word">M Productions<span class="divider">/</span></li>
-        <li class="word">Le Grisbi</li>
+        <li class="word">Mrdn Browser<span class="divider">/</span></li>
+        <li class="word">markmarkoh<span class="divider">/</span></li>
+        <li class="word">AudioContext</li>
       </ul>
       <h4 class="word">Production</h4>
     </article>
@@ -63,7 +79,7 @@
       <h4 class="word"></h4>
       <h4 class="word"></h4>
       <h4 class="word"></h4>
-      <h4 class="word top"><a href="http://github.com/markmarkoh/birdman">Source Code @github</a></h4>
+      <h4 class="word top"><a href="http://github.com/markmarkoh/birdman">Source Code @ github</a></h4>
     </article>
   </section>
   <script src="assets/jquery.js"></script>

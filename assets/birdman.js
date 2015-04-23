@@ -3,7 +3,6 @@
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 var context = new AudioContext();
-var audioBuffer;
 
 function loadBirdmanOpening() {
   var url = 'get-ready-trim.mp3';
@@ -15,8 +14,7 @@ function loadBirdmanOpening() {
   // Decode asynchronously
   request.onload = function() {
     context.decodeAudioData(request.response, function(buffer) {
-      audioBuffer = buffer;
-      playSound(audioBuffer);
+      playSound(buffer);
     }, onError);
   }
   request.send();
@@ -43,18 +41,6 @@ function playSound(buffer) {
   source.buffer = buffer;                    // tell the source which sound to play
   source.connect(context.destination);       // connect the source to the context's destination (the speakers)
 
-//       x = context;
-//         source = x.createBufferSource();
-//         source.buffer = buffer;
-//         filter = x.createBiquadFilter();
-//         filter.type = 'highpass';
-//         filter.Q.value = 2;
-//         filter.frequency.value = 2000;
-//         source.connect(filter);
-//         filter.connect(x.destination);
-//         //source.start(0, 38, 3);
-
-// source.start(0);
   offlineContext.startRendering()
   offlineContext.oncomplete = function(e) {
     // Determine 'peaks', which for a drum track should be pretty clear
@@ -78,7 +64,9 @@ function start(source) {
 }
 
 function ready(source, peaks, sampleRate) {
-  $('body').on('click', function() {
+  $('#home .call-to-action-img-holder').on('click', function() {
+    $('#slides').show().find('article').first().show();
+    $('#home').slideUp('slow');
     start(source);
     setPeakTimeouts(peaks, sampleRate);
 
@@ -139,7 +127,6 @@ function prepText() {
 }
 
 
-var LETTER_ORDER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!?/,.()';
 var nextCharIndex = 0;
 var nextElementToShow = 0;
 var lastShownPage = 0;

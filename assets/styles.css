@@ -26,17 +26,15 @@
       display: none;
     }
 
-    section article:first-child {
-      display: block;
-    }
-
-
-
     .character {
       visibility: hidden;
     }
 
     .sentence {
+      text-align: center;
+    }
+
+    .center {
       text-align: center;
     }
 
@@ -54,7 +52,7 @@
     }
 
     .top {
-      margin-top: 10%;
+      margin-top: 15%;
     }
 
     .right {
@@ -67,12 +65,14 @@
     }
 
     .small {
+      margin-top: 40px;
       font-size: 28px;
     }
 
     ul {
       list-style-type: none;
       display: block;
+      font-size: 0.8em;
       overflow: hidden;
       width: 100%;
       margin: 0 auto;
@@ -88,6 +88,10 @@
       color: #FFF;
     }
 
+    ol li {
+      float: left;
+    }
+
     li h1 {
       margin-left: 150px;
     }
@@ -100,6 +104,59 @@
 
     ul, h4, h2 {
       text-align: center;
+    }
+
+    #slides {
+      display: none;
+    }
+
+    #home {
+      font-size: .5em;
+      letter-spacing: 7px;
+      background-color: whiteSmoke;
+      position: relative;
+    }
+
+    #home article {
+      display: block;
+    }
+
+    #home .call-to-action {
+      margin-top: 140px;
+    }
+
+    #home img {
+      max-width: 20%;
+      border-radius: 3px;
+      margin-bottom: -40px;
+    }
+
+    #home .call-to-action-img-holder {
+      cursor: pointer;
+    }
+
+    #home .links {
+      position: absolute;
+      bottom: 0px;
+      left: 20px;
+    }
+
+    .links li {
+      margin-right: 10px;
+      letter-spacing: 2px;
+      font-size: 13px;
+    }
+
+    @media only screen and (min-device-width : 375px) and (max-device-width : 667px) {
+      body {
+        font-size: 1em;
+      }
+    }
+
+    @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {
+      body {
+        font-size: 2em;
+      }
     }
 
     /**
