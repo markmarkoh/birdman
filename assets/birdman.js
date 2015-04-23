@@ -24,52 +24,72 @@ function loadBirdmanOpening() {
 
 function playSound(buffer) {
   var offlineContext = new OfflineAudioContext(1, buffer.length, buffer.sampleRate);
-  var source = offlineContext.createBufferSource();
-  source.buffer = buffer;                    // tell the source which sound to play
-  source.connect(offlineContext.destination);       // connect the source to the context's destination (the speakers)
+  var filteredSource = offlineContext.createBufferSource();
+  filteredSource.buffer = buffer;                    // tell the source which sound to play
+  filteredSource.connect(offlineContext.destination);       // connect the source to the context's destination (the speakers)
 
   var filter = offlineContext.createBiquadFilter();
   filter.type = "lowpass";
 
   // Pipe the song into the filter, and the filter into the offline context
-  source.connect(filter);
+  filteredSource.connect(filter);
   filter.connect(offlineContext.destination);
 
-  source.start(0);
+  filteredSource.start(0);
 
-  var source2 = context.createBufferSource(); // creates a sound source
-  source2.buffer = buffer;                    // tell the source which sound to play
-  source2.connect(context.destination);       // connect the source to the context's destination (the speakers)
-  source2.start(0);                           // play the source now
-
-  // expose
-  window.source = source2;
+  var source = context.createBufferSource(); // creates a sound source
+  source.buffer = buffer;                    // tell the source which sound to play
+  source.connect(context.destination);       // connect the source to the context's destination (the speakers)
 
   offlineContext.startRendering()
   offlineContext.oncomplete = function(e) {
-    filteredBuffer = e.renderedBuffer;
-    console.log(filteredBuffer);
-
     // Determine 'peaks', which for a drum track should be pretty clear
-    var peaks = getPeaksAtThreshold(e.renderedBuffer.getChannelData(0), filteredBuffer.sampleRate, 0.22);
+    var peaks = getPeaksAtThreshold(e.renderedBuffer.getChannelData(0), e.renderedBuffer.sampleRate, 0.22);
     console.log('Number of peaks found:', peaks.length);
+    ready(source, peaks, e.renderedBuffer.sampleRate);
+  };
+}
 
 
+
+function setPeakTimeouts(peaks, sampleRate) {
     // For each peak, set a timeout based on the peak time (relative to right now)
     peaks.forEach(function(peak) {
-      window.setTimeout(hit, (peak / filteredBuffer.sampleRate) * 1000);
-    })
-  };
+      window.setTimeout(hit, (peak / sampleRate) * 1000);
+    });
+}
+
+function start(source) {
+  source.start(0);
+}
+
+function ready(source, peaks, sampleRate) {
+  $('body').on('click', function() {
+    start(source);
+    setPeakTimeouts(peaks, sampleRate);
+
+  });
 }
 
 function getPeaksAtThreshold(data, sampleRate, threshold) {
   var peaksArray = [];
   var length = data.length;
+  var skipRatio = 5;
   for(var i = 0; i < length;) {
     if (data[i] > threshold) {
       peaksArray.push(i);
       // Skip forward ~ 1/4s to get past this peak.
-      i += sampleRate / 4;
+      i += sampleRate / skipRatio;
+      if ( skipRatio === 5 && i > length * 0.50 ) {
+        console.log('Skip Ratio kicked', skipRatio);
+        skipRatio = 6;
+        threshold -= .05;
+      }
+      if ( skipRatio === 6 && i > length * 0.75 ) {
+        console.log('Skip Ratio kicked again', skipRatio);
+        skipRatio = 7;
+        threshold -= .05;
+      }
     }
     i++;
   }
@@ -94,25 +114,12 @@ function prepText() {
   var $text = $('.letters');
   $text.each(function() {
      var characters = this.textContent.split("").map(function(char) {
-          return '<span data-char="' + char.toUpperCase() + '" class="character ' + getClassName(char) + '">' + char.toUpperCase() + '</span>';
+          return '<span data-char="' + char.toUpperCase() + '" class="character">' + char.toUpperCase() + '</span>';
       });
       this.innerHTML = characters.join("");
   });
 }
 
-function getClassName(character) {
-  if ( /[a-zA-Z]/.test(character) ) {
-    return character.toUpperCase();
-  }
-  if ( character === '!' ) return 'bang';
-  if ( character === '?' ) return 'question';
-  if ( character === '/' ) return 'slash';
-  if ( character === ',' ) return 'comma';
-  if ( character === '.' ) return 'period';
-  if ( character === ' ' ) return 'space';
-  if ( character === '(' ) return 'l-paren';
-  if ( character === ')' ) return 'r-paren';
-}
 
 var LETTER_ORDER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!?/,.()';
 var nextCharIndex = 0;
@@ -127,8 +134,6 @@ function hit() {
 
   // Skip to the next "page" (article)
   if ( showable.page > lastShownPage ) {
-    console.log('Hiding page', lastShownPage);
-    console.log('Showing page', showable.page);
     $($('article').get(lastShownPage)).hide();
     $($('article').get(showable.page)).show();
     lastShownPage = showable.page;
@@ -137,8 +142,8 @@ function hit() {
   $(showable.el).css('visibility', 'visible');
 
   if ( showable.type === 'letters' ) {
-    charShown = hitLetters(showable.el);
-    if ( charShown === LETTER_ORDER.length ) {
+    charShown = hitLetters(showable.el, showable.letters);
+    if ( charShown === showable.letters.length ) {
       nextCharIndex = 0;
       nextElementToShow++;
     }
@@ -149,8 +154,8 @@ function hit() {
   }
 }
 
-function hitLetters(el) {
-  var charToShow = LETTER_ORDER[nextCharIndex % LETTER_ORDER.length];
+function hitLetters(el, letters) {
+  var charToShow = letters[nextCharIndex];
 
   $(el).find('[data-char="' + charToShow + '"]').css('visibility', 'visible');
   return nextCharIndex++;

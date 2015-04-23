@@ -36,6 +36,7 @@
     </article>
   </section>
   <script src="assets/jquery.js"></script>
+  <script src="assets/lodash.custom.js"></script>
   <script>
     var order = [];
 
@@ -51,7 +52,22 @@
 
       var $letters = $page.find('.letters');
       $letters.each(function() {
-        order.push({type: 'letters', el: this, page: index});
+        var letters = _.uniq(this.textContent.replace(/ /g, '').toUpperCase().split('')).sort(function(a,b) {
+          if ( /[A-Z]/.test(a) && /[A-Z]/.test(b) ) {
+            return a > b ? 1 : -1;
+          }
+          else if (/[A-Z]/.test(a) && !/[A-Z]/.test(b) ) {
+            return -1;
+          }
+          else if (!/[A-Z]/.test(a) && /[A-Z]/.test(b) ) {
+            return 1;
+          }
+
+          return a > b;
+
+        });
+        console.log(letters);
+        order.push({type: 'letters', el: this, page: index, letters: letters});
       });
 
     });
