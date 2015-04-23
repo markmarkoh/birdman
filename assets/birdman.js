@@ -28,12 +28,14 @@ function playSound(buffer) {
   filteredSource.buffer = buffer;                    // tell the source which sound to play
   filteredSource.connect(offlineContext.destination);       // connect the source to the context's destination (the speakers)
 
-  var filter = offlineContext.createBiquadFilter();
-  filter.type = "lowpass";
+  var filterOffline = offlineContext.createBiquadFilter();
+  filterOffline.type = 'highpass';
+  filterOffline.Q.value = 2;
+  filterOffline.frequency.value = 2000;
 
   // Pipe the song into the filter, and the filter into the offline context
-  filteredSource.connect(filter);
-  filter.connect(offlineContext.destination);
+  filteredSource.connect(filterOffline);
+  filterOffline.connect(offlineContext.destination);
 
   filteredSource.start(0);
 
@@ -41,6 +43,18 @@ function playSound(buffer) {
   source.buffer = buffer;                    // tell the source which sound to play
   source.connect(context.destination);       // connect the source to the context's destination (the speakers)
 
+//       x = context;
+//         source = x.createBufferSource();
+//         source.buffer = buffer;
+//         filter = x.createBiquadFilter();
+//         filter.type = 'highpass';
+//         filter.Q.value = 2;
+//         filter.frequency.value = 2000;
+//         source.connect(filter);
+//         filter.connect(x.destination);
+//         //source.start(0, 38, 3);
+
+// source.start(0);
   offlineContext.startRendering()
   offlineContext.oncomplete = function(e) {
     // Determine 'peaks', which for a drum track should be pretty clear
@@ -55,7 +69,7 @@ function playSound(buffer) {
 function setPeakTimeouts(peaks, sampleRate) {
     // For each peak, set a timeout based on the peak time (relative to right now)
     peaks.forEach(function(peak) {
-      window.setTimeout(hit, (peak / sampleRate) * 1000);
+      window.requestTimeout(hit, (peak / sampleRate) * 1000);
     });
 }
 
@@ -80,15 +94,15 @@ function getPeaksAtThreshold(data, sampleRate, threshold) {
       peaksArray.push(i);
       // Skip forward ~ 1/4s to get past this peak.
       i += sampleRate / skipRatio;
-      if ( skipRatio === 5 && i > length * 0.50 ) {
+      if ( skipRatio === 5 && i > length * 0.30 ) {
         console.log('Skip Ratio kicked', skipRatio);
-        skipRatio = 6;
-        threshold -= .05;
-      }
-      if ( skipRatio === 6 && i > length * 0.75 ) {
-        console.log('Skip Ratio kicked again', skipRatio);
         skipRatio = 7;
         threshold -= .05;
+      }
+      if ( skipRatio === 7 && i > length * 0.75 ) {
+        console.log('Skip Ratio kicked again', skipRatio);
+        skipRatio = 10;
+        threshold += .1;
       }
     }
     i++;
@@ -164,5 +178,36 @@ function hitLetters(el, letters) {
 prepText();
 loadBirdmanOpening();
 
+window.requestAnimFrame = (function() {
+  return  window.requestAnimationFrame       || 
+      window.webkitRequestAnimationFrame || 
+      window.mozRequestAnimationFrame    || 
+      window.oRequestAnimationFrame      || 
+      window.msRequestAnimationFrame     || 
+      function(/* function */ callback, /* DOMElement */ element){
+        window.setTimeout(callback, 1000 / 60);
+      };
+})();
+window.requestTimeout = function(fn, delay) {
+  if( !window.requestAnimationFrame       && 
+    !window.webkitRequestAnimationFrame && 
+    !(window.mozRequestAnimationFrame && window.mozCancelRequestAnimationFrame) && // Firefox 5 ships without cancel support
+    !window.oRequestAnimationFrame      && 
+    !window.msRequestAnimationFrame)
+      return window.setTimeout(fn, delay);
+      
+  var start = new Date().getTime(),
+    handle = new Object();
+    
+  function loop(){
+    var current = new Date().getTime(),
+      delta = current - start;
+      
+    delta >= delay ? fn.call() : handle.value = requestAnimFrame(loop);
+  };
+  
+  handle.value = requestAnimFrame(loop);
+  return handle;
+};
 
 })();

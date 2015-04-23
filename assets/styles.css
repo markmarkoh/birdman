@@ -44,6 +44,10 @@
       visibility: hidden;
     }
 
+    .show .word, .show .letters {
+      visibility: visible;
+    }
+
     ul {
       list-style-type: none;
       display: block;
@@ -52,9 +56,18 @@
       margin: 0 auto;
     }
 
+    ul.narrow {
+      width: 60%;
+      margin-top: 10%;
+    }
+
     ul li {
       float: left;
       color: #FFF;
+    }
+
+    li h1 {
+      margin-left: 90px;
     }
 
     .divider {
