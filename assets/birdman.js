@@ -58,7 +58,7 @@ function playSound(buffer) {
   offlineContext.startRendering()
   offlineContext.oncomplete = function(e) {
     // Determine 'peaks', which for a drum track should be pretty clear
-    var peaks = getPeaksAtThreshold(e.renderedBuffer.getChannelData(0), e.renderedBuffer.sampleRate, 0.22);
+    var peaks = getPeaksAtThreshold(e.renderedBuffer.getChannelData(0), e.renderedBuffer.sampleRate, 0.21);
     console.log('Number of peaks found:', peaks.length);
     ready(source, peaks, e.renderedBuffer.sampleRate);
   };
@@ -94,12 +94,16 @@ function getPeaksAtThreshold(data, sampleRate, threshold) {
       peaksArray.push(i);
       // Skip forward ~ 1/4s to get past this peak.
       i += sampleRate / skipRatio;
-      if ( skipRatio === 5 && i > length * 0.30 ) {
+      if ( skipRatio === 5 && i > length * 0.25) {
+        threshold -= .022;
+        skipRatio = 7
+      }
+      else if ( skipRatio === 7 && i > length * 0.40 ) {
         console.log('Skip Ratio kicked', skipRatio);
-        skipRatio = 7;
+        skipRatio = 9;
         threshold -= .05;
       }
-      if ( skipRatio === 7 && i > length * 0.75 ) {
+      else if ( skipRatio === 9 && i > length * 0.75 ) {
         console.log('Skip Ratio kicked again', skipRatio);
         skipRatio = 10;
         threshold += .1;
@@ -159,6 +163,7 @@ function hit() {
     charShown = hitLetters(showable.el, showable.letters);
     if ( charShown === showable.letters.length ) {
       nextCharIndex = 0;
+      charShown = 0;
       nextElementToShow++;
     }
   }

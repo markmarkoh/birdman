@@ -10,7 +10,7 @@
   <section>
     <article><div class="word"></div></article>
     <article>
-      <div class="word">
+      <div class="word top">
         <h2>HTML5 Web Audio API</h2>
         <h4>and</h4>
         <h2>Mark DiMarco</h2>
@@ -18,7 +18,7 @@
       </div>
     </article>
     <article>
-      <h4 class="word">A</h4>
+      <h4 class="word top">A</h4>
       <ul>
         <li class="word">New Regency<span class="divider">/</span></li>
         <li class="word">M Productions<span class="divider">/</span></li>
@@ -29,10 +29,10 @@
     <article><h1 class="word"></h1></article>
     <article>
       <p class="letters">And did you get what you wanted from this life, even so?</p>
-      <p class="letters">i did.</p>
+      <p class="letters right">i did.</p>
       <p class="letters"> and what did you want?</p>
-      <p class="letters">To call myself beloved, to feel myself beloved on the earth.</p>
-      <p class="letters">(raymond carver, Late Fragment)</p>
+      <p class="letters right">To call myself beloved, to feel myself beloved on the earth.</p>
+      <p class="letters right small">(raymond carver, Late Fragment)</p>
     </article>
     <article>
       <ul class="narrow">
@@ -60,6 +60,10 @@
       </ul>
       <h4 class="center word">or</h4>
       <h4 class="center letters">(the unexpected virtue of ignorance)</h4>
+      <h4 class="word"></h4>
+      <h4 class="word"></h4>
+      <h4 class="word"></h4>
+      <h4 class="word top"><a href="http://github.com/markmarkoh/birdman">Source Code @github</a></h4>
     </article>
   </section>
   <script src="assets/jquery.js"></script>
@@ -72,14 +76,13 @@
     pages.each(function(index) {
       var $page = $(this);
 
-      var $words = $page.find('.word');
-      $words.each(function() {
-        order.push({type: 'word', el: this, page: index});
-      });
-
-      var $letters = $page.find('.letters');
-      $letters.each(function() {
-        var letters = _.uniq(this.textContent.replace(/ /g, '').toUpperCase().split('')).sort(function(a,b) {
+      var $wordsAndLetters = $page.find('.letters,.word');
+      $wordsAndLetters.each(function() {
+        if ( this.classList.contains('word') ) {
+          order.push({type: 'word', el: this, page: index});
+        }
+        else if ( this.classList.contains('letters') ) {
+          var letters = _.uniq(this.textContent.replace(/ /g, '').toUpperCase().split('')).sort(function(a,b) {
           if ( /[A-Z]/.test(a) && /[A-Z]/.test(b) ) {
             return a > b ? 1 : -1;
           }
@@ -93,13 +96,10 @@
           return a > b;
 
         });
-        console.log(letters);
         order.push({type: 'letters', el: this, page: index, letters: letters});
+        }
       });
-
     });
-
-    console.log(order);
 
   </script>
   <script src="assets/birdman.js"></script>

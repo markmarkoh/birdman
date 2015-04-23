@@ -1,3 +1,5 @@
+    @import url("//hello.myfonts.net/count/2dfd76");
+
     * {
         box-sizing: border-box;
     }
@@ -10,8 +12,9 @@
     body {
       background-color: #111;
       color: #8A2106;
-      font-size: 6em;
-      font-family: "Lucida Console", Monaco, monospace;
+      font-size: 5em;
+      letter-spacing: 13px;
+      font-family: 'BellGothic-Black', Monaco, monospace;
       text-transform: uppercase;
     }
 
@@ -23,9 +26,11 @@
       display: none;
     }
 
-    section:first-child article {
+    section article:first-child {
       display: block;
     }
+
+
 
     .character {
       visibility: hidden;
@@ -48,16 +53,33 @@
       visibility: visible;
     }
 
+    .top {
+      margin-top: 10%;
+    }
+
+    .right {
+      text-align: right;
+      margin-right: 90px;
+    }
+
+    p.letters {
+      margin-left: 90px;
+    }
+
+    .small {
+      font-size: 28px;
+    }
+
     ul {
       list-style-type: none;
       display: block;
       overflow: hidden;
-      width: 85%;
+      width: 100%;
       margin: 0 auto;
     }
 
     ul.narrow {
-      width: 60%;
+      width: 90%;
       margin-top: 10%;
     }
 
@@ -67,7 +89,7 @@
     }
 
     li h1 {
-      margin-left: 90px;
+      margin-left: 150px;
     }
 
     .divider {
@@ -79,3 +101,31 @@
     ul, h4, h2 {
       text-align: center;
     }
+
+    /**
+ * @license
+ * MyFonts Webfont Build ID 3014006, 2015-04-23T01:25:12-0400
+ * 
+ * The fonts listed in this notice are subject to the End User License
+ * Agreement(s) entered into by the website owner. All other parties are 
+ * explicitly restricted from using the Licensed Webfonts(s).
+ * 
+ * You may obtain a valid license at the URLs below.
+ * 
+ * Webfont: BellGothic-Black by Linotype
+ * URL: http://www.myfonts.com/fonts/linotype/bell-gothic/black/
+ * Copyright: Part of the digitally encoded machine readable outline data for producing the Typefaces provided is copyrighted (c) 1992, 2003 Linotype Library GmbH, www.linotype.com. All rights reserved. This software is the property of Linotype Library GmbH, and may no
+ * Licensed pageviews: 250,000
+ * 
+ * 
+ * License: http://www.myfonts.com/viewlicense?type=web&buildid=3014006
+ * 
+ * © 2015 MyFonts Inc
+*/
+
+
+/* @import must be at top of file, otherwise CSS will not work */
+
+  
+@font-face {font-family: 'BellGothic-Black';src: url('webfonts/2DFD76_0_0.eot');src: url('webfonts/2DFD76_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2DFD76_0_0.woff2') format('woff2'),url('webfonts/2DFD76_0_0.woff') format('woff'),url('webfonts/2DFD76_0_0.ttf') format('truetype');}
+ 
