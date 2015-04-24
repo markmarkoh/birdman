@@ -56,7 +56,7 @@
           <h1 class="word">N</h1>
       </div>
       <h4 class="center word">or</h4>
-      <h4 class="center letters">(the unexpected virtue of ignorance)</h4>
+      <h4 class="center letters parenfirst">(the unexpected virtue of ignorance)</h4>
       <h4 class="word"></h4>
       <h4 class="word"></h4>
       <h4 class="word"></h4>
@@ -73,9 +73,12 @@
   </section>
 
   <script src="assets/jquery.js"></script>
-  <script src="assets/fittext.js"></script>
-  <script src="assets/lodash.custom.js"></script>
+  <script src="assets/lodash.custom.min.js"></script>
+  <script defer src="assets/birdman.js"></script>
+
   <script>
+    // Determine order! Just set the `order` global for now.
+    // birdman.js will expect to read from the global order array
     var order = [];
 
     var pages = $('article');
@@ -89,6 +92,8 @@
           order.push({type: 'word', el: this, page: index});
         }
         else if ( this.classList.contains('letters') ) {
+
+          //determine subset of letters in this particular element
           var letters = _.uniq(this.textContent.replace(/ /g, '').toUpperCase().split('')).sort(function(a,b) {
           if ( /[A-Z]/.test(a) && /[A-Z]/.test(b) ) {
             return a > b ? 1 : -1;
@@ -109,7 +114,6 @@
     });
 
   </script>
-  <script src="assets/birdman.js"></script>
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

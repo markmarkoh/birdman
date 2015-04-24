@@ -1,10 +1,28 @@
 (function() {
-  console.info('Load');
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 window.OfflineAudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
 var context = new AudioContext();
 var _buffer;
+
+//Convert certain tags to have each character in it's own span
+prepText();
+
+//Prefetch the song
+loadBirdmanOpening();
+
+// The audio has to start based on a user click for mobile devices
+$('#home .call-to-action-img-holder').on('click', function(e) {
+    analyzeSound(_buffer).then(function(source, peaks, sampleRate) {
+      $('#slides').show().find('article').first().show();
+      $('#home').slideUp('slow');
+      setPeakTimeouts(peaks, sampleRate);
+      source.start(0);
+      window.setTimeout(function() {
+        ga('send', 'event', 'demo', 'start');
+      }, 15);
+    });
+})
 
 function loadBirdmanOpening() {
   var deferred = $.Deferred();
@@ -17,7 +35,9 @@ function loadBirdmanOpening() {
   request.onload = function() {
     context.decodeAudioData(request.response, function(buffer) {
       _buffer = buffer;
-    }, onError);
+    }, function() {
+  console.error(arguments);
+  });
   }
   request.send();
 
@@ -62,36 +82,26 @@ function analyzeSound(buffer) {
 function setPeakTimeouts(peaks, sampleRate) {
     // For each peak, set a timeout based on the peak time (relative to right now)
     peaks.forEach(function(peak) {
-      window.requestTimeout(hit, (peak / sampleRate) * 1000);
+      window.setTimeout(hit, (peak / sampleRate) * 1000);
     });
 }
 
-$('#home .call-to-action-img-holder').on('click', function(e) {
-    analyzeSound(_buffer).then(function(source, peaks, sampleRate) {
-      $('#slides').show().find('article').first().show();
-      $('#home').slideUp('slow');
-      setPeakTimeouts(peaks, sampleRate);
-      source.start(0);
-      window.setTimeout(function() {
-        ga('send', 'event', 'demo', 'start');
-      }, 15);
-    });
-})
+
 
 function getPeaksAtThreshold(data, sampleRate, threshold) {
   var peaksArray = [];
   var length = data.length;
   var skipRatio = 5;
-  console.log(length);
-  console.log(data[length - 21000], threshold, sampleRate);
   for(var i = 0; i < length;) {
     if (data[i] > threshold) {
       peaksArray.push(i);
       // Skip forward ~ 1/4s to get past this peak.
       i += sampleRate / skipRatio;
+
+      // at 25% of the way through the song, decrease the threshold and skipRatio
       if ( skipRatio === 5 && i > length * 0.25) {
         threshold -= .022;
-        skipRatio = 7
+        skipRatio = 7;
       }
       else if ( skipRatio === 7 && i > length * 0.40 ) {
         skipRatio = 9;
@@ -105,10 +115,6 @@ function getPeaksAtThreshold(data, sampleRate, threshold) {
     i++;
   }
   return peaksArray;
-}
-
-function onError() {
-  console.error(arguments);
 }
 
 /* Convert text from:
@@ -165,7 +171,6 @@ function hit() {
   }
 
   if ( nextElementToShow === order.length ) {
-    console.log('sending finish');
     ga('send', 'event', 'demo', 'finish');
   }
 }
@@ -176,40 +181,5 @@ function hitLetters(el, letters) {
   $(el).find('[data-char="' + charToShow + '"]').css('visibility', 'visible');
   return nextCharIndex++;
 }
-
-prepText();
-loadBirdmanOpening();
-
-window.requestAnimFrame = (function() {
-  return  window.requestAnimationFrame       || 
-      window.webkitRequestAnimationFrame || 
-      window.mozRequestAnimationFrame    || 
-      window.oRequestAnimationFrame      || 
-      window.msRequestAnimationFrame     || 
-      function(/* function */ callback, /* DOMElement */ element){
-        window.setTimeout(callback, 1000 / 60);
-      };
-})();
-window.requestTimeout = function(fn, delay) {
-  if( !window.requestAnimationFrame       && 
-    !window.webkitRequestAnimationFrame && 
-    !(window.mozRequestAnimationFrame && window.mozCancelRequestAnimationFrame) && // Firefox 5 ships without cancel support
-    !window.oRequestAnimationFrame      && 
-    !window.msRequestAnimationFrame)
-      return window.setTimeout(fn, delay);
-      
-  var start = new Date().getTime(),
-    handle = new Object();
-    
-  function loop(){
-    var current = new Date().getTime(),
-      delta = current - start;
-      
-    delta >= delay ? fn.call() : handle.value = requestAnimFrame(loop);
-  };
-  
-  handle.value = requestAnimFrame(loop);
-  return handle;
-};
 
 })();
