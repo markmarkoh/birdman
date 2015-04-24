@@ -20,6 +20,7 @@
 
     article {
       padding: 75px;
+      display: flex;
     }
 
     article {
@@ -40,7 +41,7 @@
 
     article h2 {
       color: #FFF;
-      font-size: 72px;
+      font-size: 68px;
     }
 
     .word {
@@ -52,7 +53,7 @@
     }
 
     .top {
-      margin-top: 15%;
+      margin-top: 10%;
     }
 
     .right {
@@ -62,30 +63,12 @@
 
     p.letters {
       margin-left: 90px;
+      font-size: 44px;
     }
 
     .small {
-      margin-top: 40px;
-      font-size: 28px;
-    }
-
-    ul {
-      list-style-type: none;
-      display: block;
-      font-size: 0.8em;
-      overflow: hidden;
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    ul.narrow {
-      width: 90%;
-      margin-top: 10%;
-    }
-
-    ul li {
-      float: left;
-      color: #FFF;
+      margin-top: 36px;
+      font-size: 0.5em !important;
     }
 
     ol li {
@@ -96,13 +79,35 @@
       margin-left: 150px;
     }
 
-    .divider {
-      color: #8A2106;
-      padding-left: 10px;
-      padding-right: 10px;
+    .inline {
+      text-align: center;
+      margin-bottom: 20px;
     }
 
-    ul, h4, h2 {
+    .inline h1, .inline h2 {
+      display: inline;
+    }
+
+    .inline h1 {
+      color: #B1B1B1;
+      letter-spacing: 100px;
+      font-size: 1.1em;
+    }
+
+    .inline h2 {
+      font-size: .9em;
+    }
+
+    .pad-left {
+      padding-left: 150px;
+    }
+
+    .divider {
+      color: #8A2106;
+      padding-left: 25px;
+    }
+
+    h4, h2 {
       text-align: center;
     }
 
@@ -135,27 +140,79 @@
       cursor: pointer;
     }
 
-    #home .links {
-      position: absolute;
-      bottom: 0px;
-      left: 20px;
+    .links {
+      width: 75%;
+      margin: 0 auto;
     }
 
     .links li {
       margin-right: 10px;
       letter-spacing: 2px;
-      font-size: 13px;
+      font-size: 14px;
     }
 
-    @media only screen and (min-device-width : 375px) and (max-device-width : 667px) {
-      body {
-        font-size: 1em;
+    @media (min-width: 1800px) {
+      p.letters {
+        font-size: 60px;
+      }
+
+      .small {
+        margin-top: 60px;
+      }
+
+      .pad-left {
+        padding-left: 185px;
+      }
+
+      .inline h1 {
+        color: #C1C1C1;
+        letter-spacing: 125px;
+        font-size: 95px;
+      }
+
+      .top {
+        margin-top: 15%;
+      }
+
+    }
+
+    @media only screen and (min-device-width : 375px)  and (max-device-width : 667px) {
+      h1,h2,h3,h4 {
+        font-size: .75em;
+      }
+
+      .inline h1 {
+        letter-spacing: 35px;
+      }
+
+      .pad-left {
+        padding-left: 0;
+      }
+
+      p.letters {
+        font-size: 40px;
+        padding-bottom: 40px;
+        margin-left: 30px;
       }
     }
 
     @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {
-      body {
-        font-size: 2em;
+      h1,h2,h3,h4 {
+        font-size: .75em;
+      }
+
+      .inline h1 {
+        letter-spacing: 35px;
+      }
+
+      .pad-left {
+        padding-left: 0;
+      }
+
+      p.letters {
+        font-size: 40px;
+        margin-left: 30px;
+        padding-bottom: 40px;
       }
     }
 

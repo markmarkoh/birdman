@@ -2,11 +2,13 @@
   console.info('Load');
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
+window.OfflineAudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
 var context = new AudioContext();
+var _buffer;
 
 function loadBirdmanOpening() {
+  var deferred = $.Deferred();
   var url = 'get-ready-trim.mp3';
-  //var url = 'night-chatter.mp3';
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
   request.responseType = 'arraybuffer';
@@ -14,13 +16,16 @@ function loadBirdmanOpening() {
   // Decode asynchronously
   request.onload = function() {
     context.decodeAudioData(request.response, function(buffer) {
-      playSound(buffer);
+      _buffer = buffer;
     }, onError);
   }
   request.send();
+
+  return deferred.promise();
 }
 
-function playSound(buffer) {
+function analyzeSound(buffer) {
+  var deferred = $.Deferred();
   var offlineContext = new OfflineAudioContext(1, buffer.length, buffer.sampleRate);
   var filteredSource = offlineContext.createBufferSource();
   filteredSource.buffer = buffer;                    // tell the source which sound to play
@@ -46,8 +51,10 @@ function playSound(buffer) {
     // Determine 'peaks', which for a drum track should be pretty clear
     var peaks = getPeaksAtThreshold(e.renderedBuffer.getChannelData(0), e.renderedBuffer.sampleRate, 0.21);
     console.log('Number of peaks found:', peaks.length);
-    ready(source, peaks, e.renderedBuffer.sampleRate);
+    deferred.resolve(source, peaks, e.renderedBuffer.sampleRate)
   };
+
+  return deferred.promise();
 }
 
 
@@ -59,24 +66,24 @@ function setPeakTimeouts(peaks, sampleRate) {
     });
 }
 
-function start(source) {
-  source.start(0);
-}
-
-function ready(source, peaks, sampleRate) {
-  $('#home .call-to-action-img-holder').on('click', function() {
-    $('#slides').show().find('article').first().show();
-    $('#home').slideUp('slow');
-    start(source);
-    setPeakTimeouts(peaks, sampleRate);
-
-  });
-}
+$('#home .call-to-action-img-holder').on('click', function(e) {
+    analyzeSound(_buffer).then(function(source, peaks, sampleRate) {
+      $('#slides').show().find('article').first().show();
+      $('#home').slideUp('slow');
+      setPeakTimeouts(peaks, sampleRate);
+      source.start(0);
+      window.setTimeout(function() {
+        ga('send', 'event', 'demo', 'start');
+      }, 15);
+    });
+})
 
 function getPeaksAtThreshold(data, sampleRate, threshold) {
   var peaksArray = [];
   var length = data.length;
   var skipRatio = 5;
+  console.log(length);
+  console.log(data[length - 21000], threshold, sampleRate);
   for(var i = 0; i < length;) {
     if (data[i] > threshold) {
       peaksArray.push(i);
@@ -87,12 +94,10 @@ function getPeaksAtThreshold(data, sampleRate, threshold) {
         skipRatio = 7
       }
       else if ( skipRatio === 7 && i > length * 0.40 ) {
-        console.log('Skip Ratio kicked', skipRatio);
         skipRatio = 9;
         threshold -= .05;
       }
       else if ( skipRatio === 9 && i > length * 0.75 ) {
-        console.log('Skip Ratio kicked again', skipRatio);
         skipRatio = 10;
         threshold += .1;
       }
@@ -157,6 +162,11 @@ function hit() {
   else {
     nextElementToShow++;
     nextCharIndex = 0;
+  }
+
+  if ( nextElementToShow === order.length ) {
+    console.log('sending finish');
+    ga('send', 'event', 'demo', 'finish');
   }
 }
 

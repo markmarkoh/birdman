@@ -7,43 +7,38 @@
   <meta name="description" content="Birdman - A recreation of the opening credits using HTML5 WebAudio API">
   <link rel="stylesheet" href="assets/skeleton.css" />
   <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="icon" type="image/png" href="favicon.ico" />
 </head>
 <body>
   <section id="home">
     <article>
       <p>This is an experiment with the HTML5 Audio API to perform some primitive beat detection.</p>
       <p>And with those beats, we'll try to recreate the effect presented in the opening credits to the movie <em>Birdman</em>.</p>
-      <p class="center call-to-action"> Please turn your volume up and click below</p>
-      <p class="center call-to-action-img-holder"><img src="assets/Birdman_1600.jpg" /></p>
-      <ol class="links">
-        <li><a href="https://www.youtube.com/watch?v=p75qQgNdc-0">Original Opening Credits</a></li>
-        <li><a href="http://www.html5rocks.com/en/tutorials/webaudio/intro/">Intro to WebAudio</a></li>
-        <li><a href="http://tech.beatport.com/2014/web-audio/beat-detection-using-web-audio/">Beat Detection using WebAudio</a></li>
-        <li><a href="https://github.com/markmarkoh/birdman">Project Source Code</a></li>
-      </ol>
+      <p class="center call-to-action"> Turn your volume up and click below</p>
+      <p class="center call-to-action-img-holder"><a><img src="assets/Birdman_1600.jpg" /></p></a>
     </article>
   </section>
   <section id="slides">
     <article><div class="word"></div></article>
-    <article class="top">
-      <div class="word">
+    <article>
+      <div class="word top">
         <h2>HTML5 Web Audio API</h2>
         <h4>and</h4>
         <h2>Mark DiMarco</h2>
         <h4>Present</h4>
       </div>
     </article>
-    <article class="top">
-      <h4 class="word">A</h4>
-      <ul>
-        <li class="word">Mrdn Browser<span class="divider">/</span></li>
-        <li class="word">markmarkoh<span class="divider">/</span></li>
-        <li class="word">AudioContext</li>
-      </ul>
+    <article>
+      <h4 class="top word">A</h4>
+      <div class="inline">
+        <h2 class="word">Mrdn Browser<span class="divider">/</span></h2>
+        <h2 class="word">markmarkoh<span class="divider">/</span></h2>
+        <h2 class="word">AudioContext</h2>
+      </div>
       <h4 class="word">Production</h4>
     </article>
     <article><h1 class="word"></h1></article>
-    <article>
+    <article class="quote">
       <p class="letters">And did you get what you wanted from this life, even so?</p>
       <p class="letters right">i did.</p>
       <p class="letters"> and what did you want?</p>
@@ -51,38 +46,34 @@
       <p class="letters right small">(raymond carver, Late Fragment)</p>
     </article>
     <article>
-      <ul class="narrow">
-        <li>
+      <div class="top inline pad-left">
           <h1 class="word">B</h1>
-        </li>
-        <li>
           <h1 class="word">I</h1>
-        </li>
-        <li>
           <h1 class="word">R</h1>
-        </li>
-        <li>
           <h1 class="word">D</h1>
-        </li>
-        <li>
           <h1 class="word">M</h1>
-        </li>
-        <li>
           <h1 class="word">A</h1>
-        </li>
-        <li>
           <h1 class="word">N</h1>
-        </li>
-      </ul>
+      </div>
       <h4 class="center word">or</h4>
       <h4 class="center letters">(the unexpected virtue of ignorance)</h4>
       <h4 class="word"></h4>
       <h4 class="word"></h4>
       <h4 class="word"></h4>
-      <h4 class="word top"><a href="http://github.com/markmarkoh/birdman">Source Code @ github</a></h4>
+      <h4 class="word top"><a href="http://github.com/markmarkoh/birdman">Find the Source Code @ Github</a></h4>
+      <a class="word" href="https://github.com/markmarkoh/birdman"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a>
+      <ol class="links">
+        <li class="word"><a href="https://www.youtube.com/watch?v=p75qQgNdc-0">Original Opening Credits</a></li>
+        <li class="word"><a href="http://www.html5rocks.com/en/tutorials/webaudio/intro/">Intro to WebAudio</a></li>
+        <li class="word"><a href="http://tech.beatport.com/2014/web-audio/beat-detection-using-web-audio/">Beat Detection using WebAudio</a></li>
+        <li class="word"><a href="https://open.spotify.com/track/3qydStP3TW9qAQSvAJprJY">Audio Track: Get Ready by Antonio Sanchez</a></li>
+      </ol>
     </article>
+
   </section>
+
   <script src="assets/jquery.js"></script>
+  <script src="assets/fittext.js"></script>
   <script src="assets/lodash.custom.js"></script>
   <script>
     var order = [];
@@ -119,5 +110,15 @@
 
   </script>
   <script src="assets/birdman.js"></script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36315921-4', 'auto');
+  ga('send', 'pageview');
+
+  </script>
 </body>
 </html>
