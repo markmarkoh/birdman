@@ -71,8 +71,8 @@ function analyzeSound(buffer) {
     // Determine 'peaks', which for a drum track should be pretty clear
     var peaks = getPeaksAtThreshold(e.renderedBuffer.getChannelData(0), e.renderedBuffer.sampleRate, 0.21);
     console.log('Number of peaks found:', peaks.length);
-    ga('send', 'event', 'peaks', 'found', peaks.length);
-    ga('send', 'event', 'samplerate', 'found',  e.renderedBuffer.sampleRate);
+    ga('send', 'event', 'counts', 'peaks', 'found', peaks.length);
+    ga('send', 'event', 'counts', 'sampleRate', 'found', e.renderedBuffer.sampleRate);
 
     deferred.resolve(source, peaks, e.renderedBuffer.sampleRate)
   };
