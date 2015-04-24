@@ -17,3 +17,5 @@ Two great links to learn more about this approach:
 
 1. [Intro To WebAudio](http://www.html5rocks.com/en/tutorials/webaudio/intro/)
 2. [Beat Detection with WebAudio](http://tech.beatport.com/2014/web-audio/beat-detection-using-web-audio/)
+
+*The copyright to the track 'Get Ready' by Antonio Sanchez belongs to Antonio Sanchez*
