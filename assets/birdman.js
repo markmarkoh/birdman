@@ -73,6 +73,7 @@ function analyzeSound(buffer) {
     var peaks = getPeaksAtThreshold(e.renderedBuffer.getChannelData(0), e.renderedBuffer.sampleRate, 0.21);
     console.log('Number of peaks found:', peaks.length);
     ga('send', 'event', 'counts', 'peaks', 'found', peaks.length);
+    ga('send', 'event', 'counts', 'peaks_' + peaks.length);
     ga('send', 'event', 'counts', 'sampleRate', 'found', e.renderedBuffer.sampleRate);
 
     deferred.resolve(source, peaks, e.renderedBuffer.sampleRate)
