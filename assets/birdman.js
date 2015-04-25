@@ -73,6 +73,8 @@ function analyzeSound(buffer) {
     console.log('Number of peaks found:', peaks.length);
     ga('send', 'event', 'counts', 'peaks', 'found', peaks.length);
     ga('send', 'event', 'counts', 'sampleRate', 'found', e.renderedBuffer.sampleRate);
+    ga('send', 'event', 'counts', 'orderList', 'found', order.lengthds);
+
 
     deferred.resolve(source, peaks, e.renderedBuffer.sampleRate)
   };
