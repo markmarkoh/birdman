@@ -4,6 +4,7 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 window.OfflineAudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
 var context = new AudioContext();
 var _buffer;
+ga('send', 'event', 'counts', 'orderList', 'found', order.length);
 
 //Convert certain tags to have each character in it's own span
 prepText();
@@ -73,7 +74,6 @@ function analyzeSound(buffer) {
     console.log('Number of peaks found:', peaks.length);
     ga('send', 'event', 'counts', 'peaks', 'found', peaks.length);
     ga('send', 'event', 'counts', 'sampleRate', 'found', e.renderedBuffer.sampleRate);
-    ga('send', 'event', 'counts', 'orderList', 'found', order.lengthds);
 
     deferred.resolve(source, peaks, e.renderedBuffer.sampleRate)
   };
