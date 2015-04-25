@@ -3,6 +3,7 @@
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 window.OfflineAudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
 var context = new AudioContext();
+var SAMPLE_RATE = 44100;
 var _buffer;
 ga('send', 'event', 'counts', 'orderList', 'found', order.length);
 
@@ -17,7 +18,7 @@ $('#home .call-to-action-img-holder').on('click', function(e) {
     analyzeSound(_buffer).then(function(source, peaks, sampleRate) {
       $('#slides').show().find('article').first().show();
       $('#home').slideUp('slow');
-      setPeakTimeouts(peaks, sampleRate);
+      setPeakTimeouts(peaks);
       source.start(0);
       window.setTimeout(function() {
         ga('send', 'event', 'demo', 'start');
@@ -47,7 +48,7 @@ function loadBirdmanOpening() {
 
 function analyzeSound(buffer) {
   var deferred = $.Deferred();
-  var offlineContext = new OfflineAudioContext(1, buffer.length, buffer.sampleRate);
+  var offlineContext = new OfflineAudioContext(1, buffer.length, SAMPLE_RATE);
   var filteredSource = offlineContext.createBufferSource();
   filteredSource.buffer = buffer;                    // tell the source which sound to play
   filteredSource.connect(offlineContext.destination);       // connect the source to the context's destination (the speakers)
@@ -70,7 +71,7 @@ function analyzeSound(buffer) {
   offlineContext.startRendering()
   offlineContext.oncomplete = function(e) {
     // Determine 'peaks', which for a drum track should be pretty clear
-    var peaks = getPeaksAtThreshold(e.renderedBuffer.getChannelData(0), e.renderedBuffer.sampleRate, 0.21);
+    var peaks = getPeaksAtThreshold(e.renderedBuffer.getChannelData(0), 0.21);
     console.log('Number of peaks found:', peaks.length);
     ga('send', 'event', 'counts', 'peaks', 'found', peaks.length);
     ga('send', 'event', 'counts', 'peaks_' + peaks.length);
@@ -84,16 +85,16 @@ function analyzeSound(buffer) {
 
 
 
-function setPeakTimeouts(peaks, sampleRate) {
+function setPeakTimeouts(peaks) {
     // For each peak, set a timeout based on the peak time (relative to right now)
     peaks.forEach(function(peak) {
-      window.setTimeout(hit, (peak / sampleRate) * 1000);
+      window.setTimeout(hit, (peak / SAMPLE_RATE) * 1000);
     });
 }
 
 
 
-function getPeaksAtThreshold(data, sampleRate, threshold) {
+function getPeaksAtThreshold(data, threshold) {
   var peaksArray = [];
   var length = data.length;
   var skipRatio = 5;
@@ -101,7 +102,7 @@ function getPeaksAtThreshold(data, sampleRate, threshold) {
     if (data[i] > threshold) {
       peaksArray.push(i);
       // Skip forward ~ 1/4s to get past this peak.
-      i += sampleRate / skipRatio;
+      i += SAMPLE_RATE / skipRatio;
 
       // at 25% of the way through the song, decrease the threshold and skipRatio
       if ( skipRatio === 5 && i > length * 0.25) {
