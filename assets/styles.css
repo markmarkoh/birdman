@@ -141,14 +141,14 @@
     }
 
     .links {
-      width: 75%;
+      width: 85%;
       margin: 0 auto;
     }
 
     .links li {
       margin-right: 10px;
-      letter-spacing: 2px;
-      font-size: 14px;
+      letter-spacing: 1px;
+      font-size: 13px;
     }
 
     @media (min-width: 1800px) {

@@ -74,6 +74,16 @@
 
   <script src="assets/jquery.js"></script>
   <script src="assets/lodash.custom.min.js"></script>
+  <script src="//cdn.ravenjs.com/1.1.15/jquery,native/raven.min.js"></script>
+  <script>
+    Raven.config('https://95d3c3abe5174831a56583d69fd1bb79@app.getsentry.com/42539', {
+      // pass along the version of your application
+      // release: '1.0.0',
+
+        // we highly recommend restricting exceptions to a domain in order to filter out clutter
+        whitelistUrls: ['markmarkoh.com/']
+    }).install();
+  </script>
   <script defer src="assets/birdman.js"></script>
 
   <script>
