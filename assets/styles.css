@@ -160,6 +160,15 @@
         margin-top: 60px;
       }
 
+      .links {
+        width: 80%;
+      }
+
+      .links li {
+        letter-spacing: 2px;
+        font-size: 15px;
+      }
+
       .pad-left {
         padding-left: 185px;
       }
