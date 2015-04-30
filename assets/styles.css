@@ -4,6 +4,10 @@
         box-sizing: border-box;
     }
 
+    html {
+      overflow: hidden;
+    }
+
     html,body,section,article {
       height: 100%;
       width: 100%;
@@ -15,6 +19,7 @@
       letter-spacing: 13px;
       font-family: 'BellGothic-Black', Monaco, monospace;
       text-transform: uppercase;
+      margin: 0;
     }
 
     article {
