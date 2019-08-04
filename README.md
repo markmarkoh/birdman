@@ -7,7 +7,7 @@ The [opening credits to the 2014 Best Picture Birdman](https://www.youtube.com/w
 This is my attempt to recreate that effect using the Web Audio APIs available in most modern browsers.
 
 To do this, we download an .mp3 and pass it through a [filter](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode) to better isolate the louder drum and cymbal hits.
-Then we loop through the [channel data](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer/getChannelData), and based on an arbitrary threshold (for this project it was 0.22), we make a note of *when* that beat occured in the track (1.445 seconds, for example).
+Then we loop through the [channel data](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer/getChannelData), and based on an arbitrary threshold (for this project it was 0.22), we make a note of *when* that beat occurred in the track (1.445 seconds, for example).
 
 Finally, after we have an array containing the timing of all the sound "peaks", we simply set a series of `window.setTimeouts`, each with a callback to update the UI.
 
